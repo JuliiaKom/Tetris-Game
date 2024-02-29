@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400.
+.700&family=Jacquarda+Bastarda+9&family=Kalnia:wght@100..700&display=swap" rel="stylesheet">l̥
+
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h1>TETRIS</h1>
+    
+            <div class="grid"></div>
+            <div class="notification"></div>
+            <!-- //game over; -->
+        </div>
+    
+        <div class="container-block">
+            <div class="timeGame">
+                <span>TIME</span>
+                <p>00:00:00</p>
+            </div>
+            <h3 class="score">SCORE: <span id="score">0</span></h3>
+            <h3>LINE</h3>
+            <h3>LEVEL</h3>
+            <div>
+                <div class="pause_music">
+                    <div class="overlay">
+                       <button class="btn-restart">Restart</button>
+                    </div>
+                    <button class="pause">
+                        <img src="./icon/pause-icon.png" alt="pause"/>
+                    </button>
+                    <button class="sound_button">
+                        <!-- <audio id="audioPlayer" loop autoplay="true"> -->
+                            <source src="./icon/music_game.mp3"/>
+                        </audio>
+                        <img id="sound_image" src="./icon/sound-icon.png" alt="volume-sound"/>
+                    </button>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+    
+
+
+    <!-- <div></div>
+    <div></div>
+    <div></div> -->
+    <script src="script.js"></script>
+</body>
+
+</html>
