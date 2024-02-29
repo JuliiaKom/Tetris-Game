@@ -1,7 +1,18 @@
 
-scoreElement = document.querySelector('#score');
+
 const PLAYFIELD_COLUMNS = 10;
 const PLAYFIELD_ROWS = 20;
+const overlay = document.querySelector('.overlay');
+const btnRestart = document.querySelector('.btn-restart');
+const scoreElement = document.querySelector('#score');
+let audioPlayer = document.querySelector('#audioPlayer');
+let soundButton = document.querySelector('.sound_button');
+let playfield;
+let tetromino;
+let score = 0;
+let intervalId;
+let isGameOver = false;
+let isPaused = false;
 const TETROMINO_NAMES = ['O', 'J', 'L', 'Z', 'K', 'I', 'S', 'T', 'U', 'X'];
 const TETROMINOES = {
     'O': [
@@ -56,15 +67,23 @@ const TETROMINOES = {
     ]
 }
 
+init();
+const cells = document.querySelectorAll(".grid div");
+
+function init() {
+    generatePlayField();
+    generateRandomElement();
+}
+
+btnRestart.addEventListener('click', function () {
+    document.querySelector('.grid').innerHTML = '';
+    overlay.style.display = 'none';
+    init();
+})
+
 function convertPositionToIndex(row, column) {
     return row * PLAYFIELD_COLUMNS + column;
 }
-
-let playfield;
-let tetromino;
-let score = 0;
-let intervalId;
-
 
 function generatePlayField() {
     for (let i = 0; i < PLAYFIELD_ROWS * PLAYFIELD_COLUMNS; i++) {
@@ -78,7 +97,6 @@ function generatePlayField() {
 }
 
 function generateRandomElement() {
-
     const randomIndex = Math.floor(Math.random() * TETROMINO_NAMES.length);
     const name = TETROMINO_NAMES[randomIndex];
     const matrix = TETROMINOES[name];
@@ -96,13 +114,10 @@ function placeTetromino() {
     const matrixSize = tetromino.matrix.length;
     for (let row = 0; row < matrixSize; row++) {
         for (let column = 0; column < matrixSize; column++) {
-
             if (isOutsideOfTopboard(row)) {
                 isGameOver = true;
                 return;
             }
-
-
             if (tetromino.matrix[row][column]) {
                 // playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
                 if (tetromino.row + row >= 0
@@ -166,16 +181,9 @@ function findFilledRows() {
         default:
             break;
     }
-
     scoreElement.innerHTML = score;
     return rowsClear;
 }
-
-
-generatePlayField();
-generateRandomElement();
-const cells = document.querySelectorAll(".grid div");
-
 
 function drawPlayField() {
     for (let row = 0; row < PLAYFIELD_ROWS; row++) {
@@ -234,14 +242,12 @@ function draw() {
 function rotateTetramino() {
     const oldMatrix = tetromino.matrix;
     const rotatedMatrix = rotateMatrix(tetromino.matrix);
-    // showRotated = rotateMatrix(tetromino.matrix);
 
     tetromino.matrix = rotatedMatrix;
     if (!isValid()) {
         tetromino.matrix = oldMatrix;
     }
 }
-// draw();
 function rotate() {
     rotateTetramino();
     draw();
@@ -297,16 +303,11 @@ function moveTetrominoDown() {
     if (!isValid()) {
         tetromino.row -= 1;
         placeTetromino();
-        // const rowsCleared = findFilledRows();
-        // removeFillRows(rowsCleared);
     }
     if (isGameOver) {
         gameOver();
     }
-
 }
-let isGameOver = false;
-const overlay = document.querySelector('.overlay');
 
 function gameOver() {
     stopMoveDown();
@@ -349,9 +350,6 @@ function stopMoveDown() {
     intervalId = null;
 }
 
-let isPaused = false;
-
-
 document.addEventListener('DOMContentLoaded', function () {
     let pause_btn = document.querySelector(".pause");
 
@@ -372,8 +370,6 @@ function togglePauseGame() {
     isPaused = !isPaused;
 }
 
-
-
 function isValid() {
     const matrixSize = tetromino.matrix.length;
     for (let row = 0; row < matrixSize; row++) {
@@ -385,33 +381,29 @@ function isValid() {
     }
     return true;
 }
+
 function isOutsideOfTopboard(row) {
     return tetromino.row + row < 0;
 }
 
 function isOutsideOfGameboard(row, column) {
     return tetromino.matrix[row][column] &&
-
         (
             tetromino.column + column < 0
             || tetromino.column + column >= PLAYFIELD_COLUMNS
             || tetromino.row + row >= playfield.length
         );
 }
+
 function hasCollisions(row, column) {
     return tetromino.matrix[row][column]
         && playfield[tetromino.row + row]?.[tetromino.column + column];
-
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    let audioPlayer = document.querySelector('#audioPlayer');
-    let soundButton = document.querySelector('.sound_button');
-
     soundButton.addEventListener('click', function () {
         if (audioPlayer.paused) {
             audioPlayer.play();
-
         } else {
             audioPlayer.pause();
         }
