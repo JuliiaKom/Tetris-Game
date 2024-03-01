@@ -13,7 +13,7 @@ let score = 0;
 let intervalId;
 let isGameOver = false;
 let isPaused = false;
-const TETROMINO_NAMES = ['O', 'J', 'L', 'Z', 'K', 'I', 'S', 'T', 'U', 'X'];
+const TETROMINO_NAMES = ['O', 'J', 'I', 'Z', 'K', 'T', 'S', 'L', 'U', 'X'];
 const TETROMINOES = {
     'O': [
         [1, 1],
@@ -66,13 +66,19 @@ const TETROMINOES = {
         [0, 1, 0]
     ]
 }
-
+let cells;
 init();
-const cells = document.querySelectorAll(".grid div");
+
 
 function init() {
+    score = 0;
+    scoreElement.innerHTML = 0;
+    isGameOver = false;
     generatePlayField();
     generateRandomElement();
+    cells = document.querySelectorAll(".grid div");
+    moveDown();
+
 }
 
 btnRestart.addEventListener('click', function () {
@@ -149,7 +155,8 @@ function dropRowsAbove(rowDelete) {
 }
 
 function findFilledRows() {
-    const rowsClear = [];
+    // const rowsClear = [];
+    const rowsCleared = [];
     for (let row = 0; row < PLAYFIELD_ROWS; row++) {
         let columnsCleared = 0;
         for (let column = 0; column < PLAYFIELD_COLUMNS; column++) {
@@ -157,14 +164,14 @@ function findFilledRows() {
                 columnsCleared++;
             }
         }
-        if (PLAYFIELD_COLUMNS === columnsCleared) {
-            rowsClear.push(row);
+        if (columnsCleared === PLAYFIELD_COLUMNS) {
+            rowsCleared.push(row);
         }
     }
 
-    const rowsCleared = rowsClear.length;
+    // const rowsCleared = rowsClear.length;
 
-    switch (rowsCleared) {
+    switch (rowsCleared.length) {
         case 1:
             score += 10;
             break;
@@ -182,7 +189,8 @@ function findFilledRows() {
             break;
     }
     scoreElement.innerHTML = score;
-    return rowsClear;
+    updateLevel(score);
+    return rowsCleared;
 }
 
 function drawPlayField() {
@@ -279,7 +287,7 @@ function onKeyDown(e) {
 }
 
 function dropTetrominoDown() {
-    while (!isValid) {
+    while (!isValid()) {
         tetromino.row++;
     }
     tetromino.row--;
@@ -374,7 +382,6 @@ function isValid() {
     const matrixSize = tetromino.matrix.length;
     for (let row = 0; row < matrixSize; row++) {
         for (let column = 0; column < matrixSize; column++) {
-            // if(tetromino.matrix[row, column])continue;
             if (isOutsideOfGameboard(row, column)) { return false; }
             if (hasCollisions(row, column)) { return false; }
         }
@@ -409,3 +416,24 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    let timeElement = document.querySelector("#timeGame");
+    let seconds = 0;
+    let minutes = 0;
+
+    setInterval(function () {
+        seconds++;
+        if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+        }
+        timeElement.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    }, 1000);
+});
+
+
+function updateLevel() {
+    let level = Math.floor(score / 50) + 1
+    document.querySelector("#level").textContent = level;
+}
