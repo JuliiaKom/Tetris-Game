@@ -50,6 +50,7 @@ body {
 .grid .X {
     background-color: rgb(240, 26, 29);
 }
+
 .container {
     display: flex;
     justify-content: center;
@@ -103,6 +104,25 @@ h1 {
     cursor: pointer;
     color: rgb(13, 13, 86);
 }
+.next-element{
+    margin: 0 2vw 3vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 6px;
+}
+.next-tetromino{
+   width: 122px;
+	height: 116px;
+	/* background: rgb(12, 4, 116); */
+	padding: 0.5vh;
+	display: grid;
+	grid-template-columns: repeat(4, auto);
+	gap: 0.2vh;
+	border: 4px solid rgb(99, 6, 185);
+	border-radius: 6px;
+}
 .pause_music {
     display: flex;
     justify-content: space-between;
@@ -130,4 +150,87 @@ h1 {
 }
 #sound_image {
     width: 40px;
+}
+.buttons {
+    width: clamp(300px, 30vw, 500px);
+	display: grid;
+	justify-content: center;
+	place-items: center;
+	grid-template-columns: 80px 80px 80px;
+	grid-template-rows: 1fr 1fr;
+	grid-template-areas:
+		'. u .'
+		'l d r';
+	gap: 4px;
+   
+}
+button{
+    cursor: pointer;
+	width: 34px;
+	height: 60px;
+	background-color: transparent;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0 4px;
+   
+}
+.left,
+.right,
+.up,
+.down
+  {
+	background: rgba(3, 37, 131, 0.911);
+    border: 4px solid rgb(99, 6, 185);
+	padding: 0.1em 0.6em;
+	cursor: pointer;
+    border-radius: 30%;
+}
+.left {
+	transform: rotate(-90deg);
+	grid-area: l;
+}
+
+.right {
+	transform: rotate(90deg);
+	grid-area: r;
+}
+
+.down {
+	transform: rotate(180deg);
+	grid-area: d;
+}
+
+.up {
+	grid-area: u;
+}
+.left button::before,
+.left button::after,
+.right button::before,
+.right button::after,
+.down button::before,
+.down button::after,
+.up button::before,
+.up button::after {
+	content: '';
+	width: 10px;
+	height: 25px;
+	background-color: rgb(17, 227, 235);
+	box-shadow: 0px 0px 10px 2px rgb(17, 227, 235);
+	border-radius: 50%;
+}
+
+.left button::before,
+.right button::before,
+.down button::before,
+.up button::before {
+	transform: rotate(25deg);
+}
+
+.left button::after,
+.right button::after,
+.down button::after,
+.up button::after {
+	transform: rotate(-25deg);
 }
