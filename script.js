@@ -120,17 +120,15 @@ function generateRandomElement() {
         row: rowTetro,
         column: Math.floor((PLAYFIELD_COLUMNS - matrix[0].length) / 2)
     };
-    displayNextTetromino();
+    generateNextTetromino();
 }
 
 // Функція генерації наступної фігури
 //
-function displayNextTetromino() {
-	// Генеруємо наступну фігуру
-	const tetroNameLength = TETROMINO_NAMES.length - 1;
-
-	const name = TETROMINO_NAMES[randomIndex];
-	const matrix = TETROMINOES[name];
+function generateNextTetromino() {
+	const randomIndex = Math.floor(Math.random() * TETROMINO_NAMES.length);
+    const name = TETROMINO_NAMES[randomIndex];
+    const matrix = TETROMINOES[name];
 
 	let nextTetromino = {
 		name,
@@ -191,7 +189,6 @@ function dropRowsAbove(rowDelete) {
 }
 
 function findFilledRows() {
-    // const rowsClear = [];
     const rowsCleared = [];
     for (let row = 0; row < PLAYFIELD_ROWS; row++) {
         let columnsCleared = 0;
@@ -204,8 +201,6 @@ function findFilledRows() {
             rowsCleared.push(row);
         }
     }
-
-    // const rowsCleared = rowsClear.length;
 
     switch (rowsCleared.length) {
         case 1:
