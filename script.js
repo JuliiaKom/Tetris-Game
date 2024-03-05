@@ -14,6 +14,7 @@ let intervalId;
 let nextElement = document.querySelector('.next-tetromino');
 let isGameOver = false;
 let isPaused = false;
+// Функціонал роботи з стрілками (клавіатура, мишка, утримування кнопки миші)
 let up = document.querySelector('.up');
 let down = document.querySelector('.down');
 let left = document.querySelector('.left');
@@ -73,16 +74,21 @@ const TETROMINOES = {
     ]
 }
 let cells;
+let nextTetromino = null;
 init();
 
 
 function init() {
+    nextTetromino = Math.floor(Math.random() * TETROMINO_NAMES.length);
     score = 0;
     scoreElement.innerHTML = 0;
     isGameOver = false;
     generatePlayField();
     generateRandomElement();
     cells = document.querySelectorAll(".grid div");
+   
+
+    generateNextTetromino();
     moveDown();
 
 }
@@ -91,6 +97,7 @@ btnRestart.addEventListener('click', function () {
     document.querySelector('.grid').innerHTML = '';
     overlay.style.display = 'none';
     init();
+    generateNextTetromino();
 })
 
 function convertPositionToIndex(row, column) {
@@ -109,7 +116,9 @@ function generatePlayField() {
 }
 
 function generateRandomElement() {
-    const randomIndex = Math.floor(Math.random() * TETROMINO_NAMES.length);
+    
+    const randomIndex = nextTetromino;
+    nextTetromino= Math.floor(Math.random() * TETROMINO_NAMES.length);
     const name = TETROMINO_NAMES[randomIndex];
     const matrix = TETROMINOES[name];
     const rowTetro = -2;
@@ -120,19 +129,20 @@ function generateRandomElement() {
         row: rowTetro,
         column: Math.floor((PLAYFIELD_COLUMNS - matrix[0].length) / 2)
     };
+    
     generateNextTetromino();
 }
 
 // Функція генерації наступної фігури
-//
-function generateNextTetromino() {
-	const randomIndex = Math.floor(Math.random() * TETROMINO_NAMES.length);
-    const name = TETROMINO_NAMES[randomIndex];
-    const matrix = TETROMINOES[name];
 
-	let nextTetromino = {
+
+function generateNextTetromino() {
+    const name = nextTetromino;
+    const matrix = TETROMINOES[TETROMINO_NAMES[name]];
+
+	let newTetromino = {
 		name,
-		matrix,
+        matrix,
 	};
 
 	nextElement.innerHTML = '';
@@ -140,11 +150,9 @@ function generateNextTetromino() {
 	for (let row = 0; row < 4; row++) {
 		for (let column = 0; column < 4; column++) {
 			const cell = document.createElement('div');
-			cell.classList.add('next-tetromino-cell');
-			if (matrix[row] && matrix[row][column]) {
-				cell.classList.add(nextTetromino.name);
-			}
-
+            if (newTetromino.matrix[row] && newTetromino.matrix[row][column]) {
+                cell.classList.add(TETROMINO_NAMES[name]);
+            }
 			nextElement.appendChild(cell);
 		}
 	}
@@ -152,26 +160,24 @@ function generateNextTetromino() {
 
 function placeTetromino() {
     const matrixSize = tetromino.matrix.length;
+
     for (let row = 0; row < matrixSize; row++) {
         for (let column = 0; column < matrixSize; column++) {
             if (isOutsideOfTopboard(row)) {
                 isGameOver = true;
+                audioPlayer.pause();
                 return;
             }
             if (tetromino.matrix[row][column]) {
-                // playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
-                if (tetromino.row + row >= 0
-                    && tetromino.row + row < PLAYFIELD_ROWS
-                    && tetromino.column + column >= 0
-                    && tetromino.column + column < PLAYFIELD_COLUMNS) {
-                    playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
-                }
+                playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
+               
             }
         }
     }
     const rowsCleared = findFilledRows();
     removeFillRows(rowsCleared);
     generateRandomElement();
+    generateNextTetromino();
 }
 
 function removeFillRows(rowsCleared) {
@@ -266,6 +272,7 @@ function drawTetromino() {
     //row
 }
 
+// Функція оновлення поля гри
 function draw() {
     cells.forEach(cell => cell.removeAttribute('class'));
     drawPlayField();
@@ -287,79 +294,13 @@ function rotateTetramino() {
         tetromino.matrix = oldMatrix;
     }
 }
+// Функція обертання фігури і перемальовування поля
 function rotate() {
     rotateTetramino();
     draw();
+    generateNextTetromino();
 }
 
-// Функції для обробки подій
-function rotateTetrominoEvent() {
-	rotate();
-}
-
-function moveTetrominoDownContinuous    () {
-	moveTetrominoDown();
-	draw();
-}
-
-function moveTetrominoLeftContinuous() {
-	moveTetrominoLeft();
-	draw();
-}
-
-function moveTetrominoRightContinuous() {
-	moveTetrominoRight();
-	draw();
-}
-up.addEventListener('click', () => {
-    rotateTetrominoEvent();
-});
-
-down.addEventListener('click', () => {
-    moveTetrominoDownContinuous();
-});
-
-left.addEventListener('click', () => {
-    moveTetrominoLeftContinuous();
-});
-
-right.addEventListener('click', () => {
-    moveTetrominoRightContinuous();
-});
-
-// Обробка натискання на кнопку
-up.addEventListener('mousedown', () => {
-    intervalId = setInterval(rotateTetrominoEvent, 100);
-});
-
-down.addEventListener('mousedown', () => {
-    intervalId = setInterval(moveTetrominoDownContinuous, 100);
-});
-
-left.addEventListener('mousedown', () => {
-    intervalId = setInterval(moveTetrominoLeftContinuous, 100);
-});
-
-right.addEventListener('mousedown', () => {
-    intervalId = setInterval(moveTetrominoRightContinuous, 100);
-});
-
-// Обробка відтискання кнопки
-up.addEventListener('mouseup', () => {
-    clearInterval(intervalId);
-});
-
-down.addEventListener('mouseup', () => {
-    clearInterval(intervalId);
-});
-
-left.addEventListener('mouseup', () => {
-    clearInterval(intervalId);
-});
-
-right.addEventListener('mouseup', () => {
-    clearInterval(intervalId);
-});
 
 document.addEventListener('keydown', onKeyDown);
 function onKeyDown(e) {
@@ -448,7 +389,6 @@ function startMoveDown() {
     if (!intervalId) {
         intervalId = setTimeout(() => { requestAnimationFrame(moveDown) }, 700);
     }
-
 }
 
 function stopMoveDown() {
@@ -458,15 +398,48 @@ function stopMoveDown() {
     intervalId = null;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    let pause_btn = document.querySelector(".pause");
+// Функції для обробки подій
 
-    pause_btn.addEventListener('click', function () {
-        if (pause_btn) {
-            togglePauseGame();
-        }
-    })
+function rotateTetrominoEvent() {
+	rotate();
+}
+
+function moveTetrominoDownContinuous () {
+	moveTetrominoDown();
+	draw();
+}
+
+function moveTetrominoLeftContinuous() {
+	moveTetrominoLeft();
+	draw();
+}
+
+function moveTetrominoRightContinuous() {
+	moveTetrominoRight();
+	draw();
+}
+up.addEventListener('click', () => {
+    rotateTetrominoEvent();
 });
+
+down.addEventListener('click', () => {
+    moveTetrominoDownContinuous();
+});
+
+left.addEventListener('click', () => {
+    moveTetrominoLeftContinuous();
+});
+
+right.addEventListener('click', () => {
+    moveTetrominoRightContinuous();
+});
+
+
+//Пауза 
+document.querySelector(".pause").addEventListener('click', function () {
+    togglePauseGame();
+});
+
 
 function togglePauseGame() {
     if (isPaused == false) {
@@ -507,6 +480,7 @@ function hasCollisions(row, column) {
         && playfield[tetromino.row + row]?.[tetromino.column + column];
 }
 
+// Музика
 document.addEventListener('DOMContentLoaded', function () {
     soundButton.addEventListener('click', function () {
         if (audioPlayer.paused) {
@@ -516,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
+// Таймер
 document.addEventListener('DOMContentLoaded', function () {
     let timeElement = document.querySelector("#timeGame");
     let seconds = 0;

@@ -20,34 +20,45 @@ body {
     background-color: rgb(13, 143, 191);
     border-radius: 0.8vh;
 }
-.grid .O {
+.grid .O,
+.O {
     background-color: blueviolet;
 }
-.grid .J {
+.grid .J,
+.J {
     background-color: rgb(21, 223, 142);
 }
-.grid .L {
+.grid .L,
+.L {
     background-color: rgb(43, 61, 226);
 }
-.grid .Z {
+
+.grid .Z, 
+.Z{
     background-color: rgb(43, 214, 226);
 }
-.grid .K {
+.grid .K,
+.K{
     background-color: rgb(211, 78, 11);
 }
-.grid .T {
+.grid .T,
+.T {
     background-color: rgb(12, 8, 38);
 }
-.grid .I {
+.grid .I,
+.I {
     background-color: rgb(255, 24, 240);
 }
-.grid .S {
+.grid .S,
+.S {
     background-color: rgb(91, 116, 118);
 }
-.grid .U {
+.grid .U,
+.U {
     background-color: rgb(199, 233, 31);
 }
-.grid .X {
+.grid .X,
+.X {
     background-color: rgb(240, 26, 29);
 }
 
@@ -239,7 +250,7 @@ button{
 	transform: rotate(-25deg);
 }
 
-.next-tetromino.O {
+/* .next-tetromino.O {
     background-color: blueviolet;
 }
 .next-tetromino .J {
@@ -268,4 +279,4 @@ button{
 }
 .next-tetromino.X {
     background-color: rgb(240, 26, 29);
-}
+} */
