@@ -72,14 +72,14 @@ body {
 .container-block {
     border: 5px solid rgba(1, 8, 89, 0.5);
     margin-left: 20px;
-    color: rgb(51, 73, 215);
+    color:  rgba(3, 37, 131, 0.911);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     border-radius: 6px;
-    height: 85vh;
-    padding: 0 30px;
+    height: 82vh;
+    padding: 10px 30px;
     border: 8px solid blueviolet;
     box-shadow: 0 0 10px 2px rgba(1, 8, 89, 0.5);
     margin-top: 52px;
@@ -121,9 +121,9 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 16px;
     margin: 10px;
-	font-size: clamp(14px, 18px, 24px);
+	font-size: 24px;
     font-family: 'Tron', sans-serif;
 	width: clamp(70px, 12vw, 130px);
 
@@ -135,13 +135,11 @@ h1 {
     display: grid;
     grid-template-columns: repeat(4, auto);
     gap: 0.2vh;
-    border: 4px solid rgb(99, 6, 185);
     border-radius: 6px;
 }
 .pause_music {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    gap: 25px;
 }
 .pause {
     background-image: "";
@@ -164,7 +162,16 @@ h1 {
     border: none;
 }
 #sound_image {
-    width: 40px;
+    width: 43px;
+    padding-bottom: 10px;
+}
+.timeGame {
+    font-size: 20px;
+   
+}
+p{
+    color: rgba(3, 37, 131, 0.911);
+    font-family:  'Tron', sans-serif;
 }
 .buttons {
     width: clamp(300px, 30vw, 500px);
@@ -250,33 +257,3 @@ button{
 	transform: rotate(-25deg);
 }
 
-/* .next-tetromino.O {
-    background-color: blueviolet;
-}
-.next-tetromino .J {
-    background-color: rgb(21, 223, 142);
-}
-.next-tetromino.L {
-    background-color: rgb(43, 61, 226);
-}
-.next-tetromino.Z {
-    background-color: rgb(43, 214, 226);
-}
-.next-tetromino.K {
-    background-color: rgb(211, 78, 11);
-}
-.next-tetromino.T {
-    background-color: rgb(12, 8, 38);
-}
-.next-tetromino.I {
-    background-color: rgb(255, 24, 240);
-}
-.next-tetromino.S {
-    background-color: rgb(91, 116, 118);
-}
-.next-tetromino.U {
-    background-color: rgb(199, 233, 31);
-}
-.next-tetromino.X {
-    background-color: rgb(240, 26, 29);
-} */
