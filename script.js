@@ -14,7 +14,9 @@ let intervalId;
 let nextElement = document.querySelector('.next-tetromino');
 let isGameOver = false;
 let isPaused = false;
-// Функціонал роботи з стрілками (клавіатура, мишка, утримування кнопки миші)
+let cells;
+let nextTetromino = null;
+// Функціонал роботи з стрілками 
 let up = document.querySelector('.up');
 let down = document.querySelector('.down');
 let left = document.querySelector('.left');
@@ -73,10 +75,8 @@ const TETROMINOES = {
         [0, 1, 0]
     ]
 }
-let cells;
-let nextTetromino = null;
-init();
 
+init();
 
 function init() {
     nextTetromino = Math.floor(Math.random() * TETROMINO_NAMES.length);
@@ -86,8 +86,6 @@ function init() {
     generatePlayField();
     generateRandomElement();
     cells = document.querySelectorAll(".grid div");
-   
-
     generateNextTetromino();
     moveDown();
 
@@ -116,9 +114,9 @@ function generatePlayField() {
 }
 
 function generateRandomElement() {
-    
+
     const randomIndex = nextTetromino;
-    nextTetromino= Math.floor(Math.random() * TETROMINO_NAMES.length);
+    nextTetromino = Math.floor(Math.random() * TETROMINO_NAMES.length);
     const name = TETROMINO_NAMES[randomIndex];
     const matrix = TETROMINOES[name];
     const rowTetro = -2;
@@ -129,33 +127,32 @@ function generateRandomElement() {
         row: rowTetro,
         column: Math.floor((PLAYFIELD_COLUMNS - matrix[0].length) / 2)
     };
-    
+
     generateNextTetromino();
 }
 
 // Функція генерації наступної фігури
 
-
 function generateNextTetromino() {
     const name = nextTetromino;
     const matrix = TETROMINOES[TETROMINO_NAMES[name]];
 
-	let newTetromino = {
-		name,
+    let newTetromino = {
+        name,
         matrix,
-	};
+    };
 
-	nextElement.innerHTML = '';
+    nextElement.innerHTML = '';
 
-	for (let row = 0; row < 4; row++) {
-		for (let column = 0; column < 4; column++) {
-			const cell = document.createElement('div');
+    for (let row = 0; row < 4; row++) {
+        for (let column = 0; column < 4; column++) {
+            const cell = document.createElement('div');
             if (newTetromino.matrix[row] && newTetromino.matrix[row][column]) {
                 cell.classList.add(TETROMINO_NAMES[name]);
             }
-			nextElement.appendChild(cell);
-		}
-	}
+            nextElement.appendChild(cell);
+        }
+    }
 }
 
 function placeTetromino() {
@@ -170,7 +167,7 @@ function placeTetromino() {
             }
             if (tetromino.matrix[row][column]) {
                 playfield[tetromino.row + row][tetromino.column + column] = tetromino.name;
-               
+
             }
         }
     }
@@ -401,22 +398,22 @@ function stopMoveDown() {
 // Функції для обробки подій
 
 function rotateTetrominoEvent() {
-	rotate();
+    rotate();
 }
 
-function moveTetrominoDownContinuous () {
-	moveTetrominoDown();
-	draw();
+function moveTetrominoDownContinuous() {
+    moveTetrominoDown();
+    draw();
 }
 
 function moveTetrominoLeftContinuous() {
-	moveTetrominoLeft();
-	draw();
+    moveTetrominoLeft();
+    draw();
 }
 
 function moveTetrominoRightContinuous() {
-	moveTetrominoRight();
-	draw();
+    moveTetrominoRight();
+    draw();
 }
 up.addEventListener('click', () => {
     rotateTetrominoEvent();
